@@ -49,6 +49,7 @@ No authentication headers are required.
     "deleted": false
   }
 ]
+```
 
 
 #### Create Patient
