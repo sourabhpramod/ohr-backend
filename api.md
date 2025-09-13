@@ -1,5 +1,4 @@
 
-
 ```markdown
 # HealthSync API Documentation
 
@@ -10,7 +9,7 @@ This document provides the full API reference for the HealthSync backend. It is 
 ## Base URL
 ```
 
-http\://<your-domain-or-ip>/api/
+http\:///api/
 
 ````
 
@@ -19,7 +18,8 @@ All endpoints are prefixed with `/api/`.
 ---
 
 ## Authentication
-Currently, all endpoints are open (`AllowAny`). No authentication headers are required.  
+Currently, all endpoints are open (`AllowAny`).  
+No authentication headers are required.  
 
 ---
 
@@ -30,7 +30,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 **Base Path:** `/api/patients/`  
 
 #### List Patients
-- **Method:** GET  
+- **Method:** `GET`  
 - **URL:** `/api/patients/`  
 - **Description:** Retrieve all patients.  
 - **Request Parameters:** None  
@@ -53,7 +53,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 #### Create Patient
 
-* **Method:** POST
+* **Method:** `POST`
 * **URL:** `/api/patients/`
 * **Body Example:**
 
@@ -70,22 +70,22 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 #### Retrieve Patient
 
-* **Method:** GET
+* **Method:** `GET`
 * **URL:** `/api/patients/{id}/`
-* **Response:** Returns the patient object with the given ID.
+* **Response:** Patient object with the given ID.
 
 #### Update Patient
 
-* **Method:** PUT / PATCH
+* **Method:** `PUT` / `PATCH`
 * **URL:** `/api/patients/{id}/`
 * **Body Example:** Same as create.
 * **Response:** Updated patient object.
 
 #### Delete Patient
 
-* **Method:** DELETE
+* **Method:** `DELETE`
 * **URL:** `/api/patients/{id}/`
-* **Response:** HTTP 204 No Content
+* **Response:** `HTTP 204 No Content`
 
 ---
 
@@ -95,7 +95,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 #### List Health Records
 
-* **Method:** GET
+* **Method:** `GET`
 * **URL:** `/api/records/`
 * **Description:** Retrieve all health records.
 * **Response Example:**
@@ -116,7 +116,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 #### Create Health Record
 
-* **Method:** POST
+* **Method:** `POST`
 * **URL:** `/api/records/`
 * **Body Example:**
 
@@ -130,9 +130,9 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 * **Response:** Created health record object.
 
-#### Retrieve / Update / Delete
+#### Retrieve / Update / Delete Record
 
-* **Methods:** GET, PUT/PATCH, DELETE
+* **Methods:** `GET`, `PUT` / `PATCH`, `DELETE`
 * **URL:** `/api/records/{id}/`
 
 ---
@@ -140,9 +140,11 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 ### 3. Sync Upload
 
 **Path:** `/api/sync/upload/`
-**Method:** POST
-**Description:** Upload a batch of changes from a client device. Changes are applied to patients and health records.
-**Request Body Example:**
+**Method:** `POST`
+**Description:** Upload a batch of changes from a client device.
+Changes are applied to patients and health records.
+
+#### Request Body Example:
 
 ```json
 {
@@ -170,7 +172,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 }
 ```
 
-**Response Example:**
+#### Response Example:
 
 ```json
 {
@@ -190,13 +192,15 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 ### 4. Sync Download
 
 **Path:** `/api/sync/download/`
-**Method:** GET
+**Method:** `GET`
 **Description:** Download all records updated after a given timestamp.
-**Query Parameters:**
 
-* `since` (required) – ISO8601 timestamp. Example: `?since=2025-09-12T10:00:00Z`
+#### Query Parameters:
 
-**Response Example:**
+* `since` (required) – ISO8601 timestamp.
+  Example: `?since=2025-09-12T10:00:00Z`
+
+#### Response Example:
 
 ```json
 {
@@ -219,13 +223,14 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 ### 5. Trigger Sync Batch (Celery)
 
 **Path:** `/api/sync/trigger/{batch_id}/`
-**Method:** POST
-**Description:** Trigger asynchronous processing of a `SyncBatch` using Celery.
-**URL Parameters:**
+**Method:** `POST`
+**Description:** Trigger asynchronous processing of a SyncBatch using Celery.
+
+#### URL Parameters:
 
 * `batch_id` – UUID of the sync batch created by `SyncUploadView`.
 
-**Response Example:**
+#### Response Example:
 
 ```json
 {
@@ -249,11 +254,25 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 
 ### Patient
 
-* `id`, `owner`, `name`, `dob`, `identifiers`, `fhir`, `server_version`, `updated_at`, `deleted`
+* `id`
+* `owner`
+* `name`
+* `dob`
+* `identifiers`
+* `fhir`
+* `server_version`
+* `updated_at`
+* `deleted`
 
 ### HealthRecord
 
-* `id`, `patient`, `resource_type`, `data`, `server_version`, `updated_at`, `deleted`
+* `id`
+* `patient`
+* `resource_type`
+* `data`
+* `server_version`
+* `updated_at`
+* `deleted`
 
 ---
 
@@ -262,8 +281,7 @@ Currently, all endpoints are open (`AllowAny`). No authentication headers are re
 * CORS is enabled for local development.
 * Celery is configured to handle background sync tasks.
 
----
-
 ```
+
 
 ```
