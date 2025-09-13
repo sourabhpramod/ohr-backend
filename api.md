@@ -11,9 +11,9 @@ This document provides the full API reference for the HealthSync backend. It is 
 
 http\:///api/
 
-````
 
-All endpoints are prefixed with `/api/`.
+
+## All endpoints are prefixed with `/api/`.
 
 ---
 
@@ -49,7 +49,7 @@ No authentication headers are required.
     "deleted": false
   }
 ]
-````
+
 
 #### Create Patient
 
