@@ -42,6 +42,7 @@ No authentication headers are required.
     "owner": null,
     "name": "John Doe",
     "dob": "1990-01-01",
+    "mobile_number": "+919876543210",
     "identifiers": {},
     "fhir": null,
     "server_version": 1,
@@ -62,6 +63,7 @@ No authentication headers are required.
 {
   "name": "John Doe",
   "dob": "1990-01-01",
+  "mobile_number": "+919876543210",
   "identifiers": {},
   "fhir": {}
 }
