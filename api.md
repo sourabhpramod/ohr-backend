@@ -149,28 +149,70 @@ Error Responses:
 ]
 ```
 
-#### Create Health Record
+## 2. Health Records
 
-* **Method:** `POST`
-* **URL:** `/api/records/`
-* **Body Example:**
+Base Path: `/api/records/`
 
+### List Health Records
+
+Method: GET
+
+URL: `/api/records/`
+
+Description: Retrieve all health records.
+
+Response Example:
 ```json
-{
-  "patient": "uuid-of-patient",
-  "resource_type": "Observation",
-  "data": {}
-}
+[
+  {
+    "id": "uuid-of-record",
+    "patient": "uuid-of-patient",
+    "mobile_number": "8590169903",
+    "resource_type": "Observation",
+    "data": {},
+    "server_version": 1,
+    "updated_at": "2025-09-12T19:25:18.331Z",
+    "deleted": false
+  }
+]
 ```
 
-* **Response:** Created health record object.
+### Create Health Record
 
-#### Retrieve / Update / Delete Record
+Method: POST
 
-* **Methods:** `GET`, `PUT` / `PATCH`, `DELETE`
-* **URL:** `/api/records/{id}/`
+URL: `/api/records/`
 
----
+Description: Create a health record. You can provide either the patient UUID or the mobile_number of the patient. The backend will automatically resolve mobile_number to the corresponding patient.
+
+Request Body Examples:
+
+Using patient UUID:
+```json
+{
+  "resource_type": "Observation",
+  "data": {},
+  "deleted": false,
+  "patient": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+```
+Using mobile_number:
+```json
+{
+  "resource_type": "Observation",
+  "data": {},
+  "deleted": false,
+  "mobile_number": "8590169903"
+}
+
+```
+Response: Created health record object with both patient and mobile_number fields populated.
+
+Retrieve / Update / Delete Record
+
+Methods: GET, PUT / PATCH, DELETE
+
+URL: /api/records/{id}/
 
 ### 3. Sync Upload
 
