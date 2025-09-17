@@ -124,30 +124,6 @@ Error Responses:
 
 ---
 
-### 2. Health Records
-
-**Base Path:** `/api/records/`
-
-#### List Health Records
-
-* **Method:** `GET`
-* **URL:** `/api/records/`
-* **Description:** Retrieve all health records.
-* **Response Example:**
-
-```json
-[
-  {
-    "id": "uuid-of-record",
-    "patient": "uuid-of-patient",
-    "resource_type": "Observation",
-    "data": {},
-    "server_version": 1,
-    "updated_at": "2025-09-12T19:25:18.331Z",
-    "deleted": false
-  }
-]
-```
 
 ## 2. Health Records
 
