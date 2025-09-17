@@ -77,6 +77,38 @@ No authentication headers are required.
 * **URL:** `/api/patients/{id}/`
 * **Response:** Patient object with the given ID.
 
+### Get Patient by Mobile
+
+Method: GET
+URL: `/api/patients/by_mobile/?mobile={number}`
+Description: Fetch a single patient by their mobile number.
+
+Example Request:
+
+GET `/api/patients/by_mobile/?mobile=9876543210`
+
+
+Response Example:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "owner": null,
+  "name": "John Doe",
+  "dob": "1990-01-01",
+  "mobile_number": "9876543210",
+  "identifiers": {},
+  "fhir": null,
+  "server_version": 1,
+  "updated_at": "2025-09-12T19:25:18.331Z",
+  "deleted": false
+}
+
+```
+Error Responses:
+
+400 → { "error": "mobile query param required" }
+
+404 → { "error": "not found" }
 #### Update Patient
 
 * **Method:** `PUT` / `PATCH`
