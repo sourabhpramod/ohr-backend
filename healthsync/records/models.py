@@ -10,6 +10,7 @@ class Patient(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=256)
     dob = models.DateField(null=True, blank=True)
+    mobile_number = models.CharField(max_length=15, null=True, blank=True)  # <-- Added field
     identifiers = models.JSONField(default=dict, blank=True)
     fhir = models.JSONField(null=True, blank=True)
     server_version = models.IntegerField(default=1)
@@ -22,11 +23,17 @@ class Patient(models.Model):
 class HealthRecord(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="records")
+    mobile_number = models.CharField(max_length=15, null=True, blank=True)  # New field
     resource_type = models.CharField(max_length=128)
     data = models.JSONField()
     server_version = models.IntegerField(default=1)
     updated_at = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.mobile_number and self.patient:
+            self.mobile_number = self.patient.mobile_number
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.resource_type} - {self.id}"

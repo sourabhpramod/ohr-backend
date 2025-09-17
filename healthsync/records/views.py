@@ -14,12 +14,41 @@ class PatientViewSet(viewsets.ModelViewSet):
     queryset = Patient.objects.all().order_by("-updated_at")
     serializer_class = PatientSerializer
     permission_classes = [AllowAny]
+    @action(detail=False, methods=['get'])
+    def by_mobile(self, request):
+        mobile = request.query_params.get('mobile')
+        if not mobile:
+            return Response({"error": "mobile query param required"}, status=400)
+        try:
+            patient = Patient.objects.get(mobile_number=mobile)
+            return Response(self.get_serializer(patient).data)
+        except Patient.DoesNotExist:
+            return Response({"error": "not found"}, status=404)
 
 class HealthRecordViewSet(viewsets.ModelViewSet):
     queryset = HealthRecord.objects.all().order_by("-updated_at")
     serializer_class = HealthRecordSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+
+        mobile = data.get("mobile_number")
+        patient_id = data.get("patient")
+
+        if mobile and not patient_id:
+            try:
+                patient = Patient.objects.get(mobile_number=mobile)
+                data["patient"] = str(patient.id)
+            except Patient.DoesNotExist:
+                return Response({"error": "No patient found with this mobile number."}, status=404)
+
+        # mobile_number will auto-fill in the model's save() if not provided
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
 class TriggerSyncBatchView(APIView):
     """
     Endpoint to trigger background processing of a SyncBatch via Celery.
