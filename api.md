@@ -42,6 +42,7 @@ No authentication headers are required.
     "owner": null,
     "name": "John Doe",
     "dob": "1990-01-01",
+    "mobile_number": "+919876543210",
     "identifiers": {},
     "fhir": null,
     "server_version": 1,
@@ -62,6 +63,7 @@ No authentication headers are required.
 {
   "name": "John Doe",
   "dob": "1990-01-01",
+  "mobile_number": "+919876543210",
   "identifiers": {},
   "fhir": {}
 }
@@ -75,6 +77,38 @@ No authentication headers are required.
 * **URL:** `/api/patients/{id}/`
 * **Response:** Patient object with the given ID.
 
+### Get Patient by Mobile
+
+Method: GET
+URL: `/api/patients/by_mobile/?mobile={number}`
+Description: Fetch a single patient by their mobile number.
+
+Example Request:
+
+GET `/api/patients/by_mobile/?mobile=9876543210`
+
+
+Response Example:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "owner": null,
+  "name": "John Doe",
+  "dob": "1990-01-01",
+  "mobile_number": "9876543210",
+  "identifiers": {},
+  "fhir": null,
+  "server_version": 1,
+  "updated_at": "2025-09-12T19:25:18.331Z",
+  "deleted": false
+}
+
+```
+Error Responses:
+
+400 → { "error": "mobile query param required" }
+
+404 → { "error": "not found" }
 #### Update Patient
 
 * **Method:** `PUT` / `PATCH`
@@ -90,22 +124,26 @@ No authentication headers are required.
 
 ---
 
-### 2. Health Records
 
-**Base Path:** `/api/records/`
+## 2. Health Records
 
-#### List Health Records
+Base Path: `/api/records/`
 
-* **Method:** `GET`
-* **URL:** `/api/records/`
-* **Description:** Retrieve all health records.
-* **Response Example:**
+### List Health Records
 
+Method: GET
+
+URL: `/api/records/`
+
+Description: Retrieve all health records.
+
+Response Example:
 ```json
 [
   {
     "id": "uuid-of-record",
     "patient": "uuid-of-patient",
+    "mobile_number": "8590169903",
     "resource_type": "Observation",
     "data": {},
     "server_version": 1,
@@ -115,28 +153,42 @@ No authentication headers are required.
 ]
 ```
 
-#### Create Health Record
+### Create Health Record
 
-* **Method:** `POST`
-* **URL:** `/api/records/`
-* **Body Example:**
+Method: POST
 
+URL: `/api/records/`
+
+Description: Create a health record. You can provide either the patient UUID or the mobile_number of the patient. The backend will automatically resolve mobile_number to the corresponding patient.
+
+Request Body Examples:
+
+Using patient UUID:
 ```json
 {
-  "patient": "uuid-of-patient",
   "resource_type": "Observation",
-  "data": {}
+  "data": {},
+  "deleted": false,
+  "patient": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 }
 ```
+Using mobile_number:
+```json
+{
+  "resource_type": "Observation",
+  "data": {},
+  "deleted": false,
+  "mobile_number": "8590169903"
+}
 
-* **Response:** Created health record object.
+```
+Response: Created health record object with both patient and mobile_number fields populated.
 
-#### Retrieve / Update / Delete Record
+Retrieve / Update / Delete Record
 
-* **Methods:** `GET`, `PUT` / `PATCH`, `DELETE`
-* **URL:** `/api/records/{id}/`
+Methods: GET, PUT / PATCH, DELETE
 
----
+URL: /api/records/{id}/
 
 ### 3. Sync Upload
 
